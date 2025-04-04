@@ -13,9 +13,9 @@
 #include <pspctrl.h>
 #include <psputils.h>
 #include <pspdisplay.h>
+#include <psprtc.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <psprtc.h>
 #include <string.h>
 #include <time.h>
 
