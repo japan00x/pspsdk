@@ -1,4 +1,4 @@
-/*
+/* 
     PSP ASCII Art Converter
     画像（ms0:/data/asciiart.bmp）を読み込み、ASCII アートに変換して表示・保存する PSP 用サンプルコード。
     ・PSPSDK 標準の関数のみを使用（pspdebug, pspctrl, pspkernel, pspdisplay 等）
@@ -13,7 +13,9 @@
 #include <pspctrl.h>
 #include <psputils.h>
 #include <pspdisplay.h>
+extern "C" {
 #include <psprtc.h>
+}
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -188,12 +190,11 @@ char* convert_to_ascii(const Image* img) {
     return asciiArt;
 }
 
-// 現在時刻からファイル名文字列を作成（例："MMddHHmmss" + suffix）
+// 現在時刻からファイル名文字列を作成（例："ms0:/data/" + tick 値 + suffix）
 void make_filename(char* buffer, int bufferSize, const char* suffix) {
     SceRtcTick tick;
     sceRtcGetCurrentTick(&tick);
-    // PSP の tick は 1 tick = 1/1000000 sec などと仮定し、シンプルに下位桁を使う
-    // ここでは簡易に tick.tick の下位 10 桁を利用
+    // tick.tick の下位32bitを利用
     unsigned int t = (unsigned int)(tick.tick & 0xffffffff);
     snprintf(buffer, bufferSize, "%s%u%s", OUTPUT_DIR, t, suffix);
 }
