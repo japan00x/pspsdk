@@ -14,7 +14,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        apk add build-base autoconf automake zlib-dev bash git
+        apk add build-base autoconf automake zlib-dev bash git mbedtls-dev
 
     - uses: actions/checkout@v4
 
