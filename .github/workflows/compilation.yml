@@ -31,11 +31,11 @@ jobs:
 
     - name: Compile Examples
       run: |
-        cd src/samples && make -f Makefile.samples
+        cd src/test && make -f Makefile
     
     - name: Compress Samples folder folder
       run: |
-        tar -zcvf samples.tar.gz src/samples
+        tar -zcvf samples.tar.gz src/test
     
     - name: Upload Samples artifacts
       if: ${{ success() }}
