@@ -15,6 +15,7 @@
 #include <pspdisplay.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <psprtc.h>
 #include <string.h>
 #include <time.h>
 
