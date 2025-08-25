@@ -5,7 +5,6 @@ on:
   pull_request:
   repository_dispatch:
     types: [run_build]
-
 jobs:
   build:
     runs-on: ubuntu-latest
