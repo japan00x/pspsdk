@@ -13,6 +13,7 @@
 #include <pspctrl.h>
 #include <psputils.h>
 #include <pspdisplay.h>
+#include <psptypes.h>
 extern "C" {
 #include <psprtc.h>
 }
@@ -192,10 +193,10 @@ char* convert_to_ascii(const Image* img) {
 
 // 現在時刻からファイル名文字列を作成（例："ms0:/data/" + tick 値 + suffix）
 void make_filename(char* buffer, int bufferSize, const char* suffix) {
-    SceRtcTick tick;
+    u64 tick;
     sceRtcGetCurrentTick(&tick);
-    // tick.tick の下位32bitを利用
-    unsigned int t = (unsigned int)(tick.tick & 0xffffffff);
+    // tick の下位32bitを利用
+    unsigned int t = (unsigned int)(tick & 0xffffffff);
     snprintf(buffer, bufferSize, "%s%u%s", OUTPUT_DIR, t, suffix);
 }
 
