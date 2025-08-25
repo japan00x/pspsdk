@@ -19,7 +19,7 @@ PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
 #define BMP_FILE_PATH       "ms0:/data/asciiart.bmp"
 #define OUTPUT_DIR          "ms0:/data/"
 #define ASCII_FILE_SUFFIX   "_ascii_art.txt"
-#define TARGET_SIZE         100
+#define TARGET_WIDTH        100
 
 #pragma pack(push, 1)
 typedef struct {
@@ -60,7 +60,7 @@ static int get_shift(uint32_t mask) {
     return shift;
 }
 
-Image* load_and_resize_bmp(const char* path, int tgt_w, int tgt_h) {
+Image* load_and_resize_bmp(const char* path, int tgt_w) {
     FILE* fp = fopen(path, "rb");
     if (!fp) {
         return NULL;
@@ -90,6 +90,8 @@ Image* load_and_resize_bmp(const char* path, int tgt_w, int tgt_h) {
     }
     int width = infoHeader.biWidth;
     int height = (infoHeader.biHeight > 0) ? infoHeader.biHeight : -infoHeader.biHeight;
+    int tgt_h = (height * tgt_w) / width;
+    if (tgt_h < 1) tgt_h = 1;
     int bottom_up = (infoHeader.biHeight > 0);
     int bitCount = infoHeader.biBitCount;
     int rowSize = ((bitCount * width + 31) / 32) * 4;
@@ -215,7 +217,7 @@ char* convert_to_ascii(const Image* img) {
             int r = img->pixels[index + 0];
             int g = img->pixels[index + 1];
             int b = img->pixels[index + 2];
-            int gray = (r * 30 + g * 59 + b * 11) / 100;
+            int gray = (299 * r + 587 * g + 114 * b) / 1000;
             int charIndex = (gray * (asciiCharsLen - 1)) / 255;
             asciiArt[pos++] = asciiChars[charIndex];
         }
@@ -268,7 +270,7 @@ int main(void) {
 
     pspDebugScreenPrintf("\nStarting conversion...\n");
 
-    Image* img = load_and_resize_bmp(BMP_FILE_PATH, TARGET_SIZE, TARGET_SIZE);
+    Image* img = load_and_resize_bmp(BMP_FILE_PATH, TARGET_WIDTH);
     if (!img) {
         pspDebugScreenPrintf("Abnormal: Failed to load or resize image.\n");
         pspDebugScreenPrintf("Press any button to exit...\n");
