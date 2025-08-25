@@ -7,7 +7,6 @@ on:
   repository_dispatch:
     types: [run_build]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
